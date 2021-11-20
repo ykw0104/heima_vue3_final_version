@@ -1,5 +1,5 @@
 <template>
-  <div>List</div>
+  <div class="hm-list">List</div>
 </template>
 
 <script setup>

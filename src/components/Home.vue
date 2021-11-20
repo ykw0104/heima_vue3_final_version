@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="hm-home">
     Home
     <router-view />
   </div>

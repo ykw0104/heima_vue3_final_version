@@ -1,5 +1,5 @@
 <template>
-  <div>Params</div>
+  <div class="hm-params">Params</div>
 </template>
 
 <script setup>

@@ -1,5 +1,5 @@
 <template>
-  <div>rights</div>
+  <div class="hm-rights">rights</div>
 </template>
 
 <script setup>

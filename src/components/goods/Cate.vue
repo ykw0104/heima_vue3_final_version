@@ -1,5 +1,5 @@
 <template>
-  <div>Cate</div>
+  <div class="hm-cate">Cate</div>
 </template>
 
 <script setup>

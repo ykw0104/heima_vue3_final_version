@@ -1,5 +1,5 @@
 <template>
-  <div>Roles</div>
+  <div class="hm-roles">Roles</div>
 </template>
 
 <script setup>

@@ -1,5 +1,5 @@
 <template>
-  <div>users</div>
+  <div class="hm-users">users</div>
 </template>
 
 <script setup>

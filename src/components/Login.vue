@@ -1,5 +1,5 @@
 <template>
-  <div>Login</div>
+  <div class="hm-login">Login</div>
 </template>
 
 <script setup>

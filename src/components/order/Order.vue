@@ -1,5 +1,5 @@
 <template>
-  <div>Order</div>
+  <div class="hm-order">Order</div>
 </template>
 
 <script setup>

@@ -1,5 +1,5 @@
 <template>
-  <div>add</div>
+  <div class="hm-add">add</div>
 </template>
 
 <script setup>
