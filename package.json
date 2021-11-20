@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@element-plus/icons": "^0.0.11",
     "@vueup/vue-quill": "^1.0.0-beta.7",
     "axios": "^0.24.0",
     "core-js": "^3.6.5",

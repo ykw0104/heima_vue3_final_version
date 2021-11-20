@@ -1,0 +1,40 @@
+  import { Calendar, Search } from '@element-plus/icons'  
+  import { ElMessage } from 'element-plus'    
+      
+
+      <el-form ref="form" :model="form" label-width="120px">
+        <el-form-item label="Activity name">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+      </el-form>
+
+
+      rules: {
+        name: [
+          {
+            required: true,
+            message: 'Please input Activity name',
+            trigger: 'blur',
+          },
+        ],
+      }
+
+
+    loginFormRef.value.validate((valid) => {
+      // 校验不通过
+      if (!valid) return false;
+
+      //校验通过
+    });
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   import { ElMessage } from 'element-plus' 
+   
+    if (res.meta.status !== 200) return ElMessage.error("登录失败 o(╥﹏╥)o");
+    ElMessage.success("登录成功 (*^▽^*)");
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      // 带图标的输入框
+      <el-input
+        v-model="input2"
+        placeholder="Type something"
+        :prefix-icon="Search"
+      />

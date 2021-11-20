@@ -16,14 +16,17 @@ $http.interceptors.request.use(
 );
 
 /* --Login--------------------------------------------------------------------------------------------------- */
-/* 用户登录 */
-export const $login = (username, password) => {
+/**
+ * 用户登录
+ * user对象的属性有:username, password
+ */
+export const $login = (user) => {
   return $http({
     method: "POST",
     url: "/login",
     data: {
-      username,
-      password,
+      username: user.username,
+      password: user.password,
     },
   });
 };

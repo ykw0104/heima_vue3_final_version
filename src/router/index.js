@@ -29,4 +29,14 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((to, from) => {
+  // 没有登录跳转到登录页
+  if (to.path !== "/login") {
+    const token = window.sessionStorage.getItem("token");
+    if (!token) {
+      return { path: "/login" };
+    }
+  }
+});
+
 export default router;
