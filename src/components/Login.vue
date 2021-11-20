@@ -120,7 +120,7 @@ const resetLoginForm = () => {
 .hm-login {
   position: relative;
   height: 100%;
-  background-color: #c4eceb;
+  background-color: #373d41;
 
   .hm-login-box {
     position: absolute;
