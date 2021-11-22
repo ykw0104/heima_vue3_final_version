@@ -19,17 +19,17 @@
             v-model="loginForm.username"
             :prefix-icon="User"
             placeholder="请输入用户名"
-          ></el-input>
+          />
         </el-form-item>
 
         <!-- 2.2 密码 -->
         <el-form-item prop="password">
           <el-input
             v-model="loginForm.password"
-            type="password"
             :prefix-icon="Key"
             placeholder="请输入密码"
-          ></el-input>
+            show-password
+          />
         </el-form-item>
 
         <!-- 2.3 提交按钮 -->

@@ -16,10 +16,10 @@ $http.interceptors.request.use(
   }
 );
 
-/* --1. 登录--------------------------------------------------------------------------------------------------- */
+/* --2. 登录--------------------------------------------------------------------------------------------------- */
 /**
  * 用户登录
- * user对象的属性有:username, password
+ * @param {*} user 包含username, password
  */
 export const $login = (user) => {
   return $http({
@@ -32,10 +32,10 @@ export const $login = (user) => {
   });
 };
 
-/* --2. 用户管理--------------------------------------------------------------------------------------------------- */
+/* --3. 用户管理--------------------------------------------------------------------------------------------------- */
 /**
  * 获取用户列表
- * queryInfo对象的属性有: query, pagenum, pagesize
+ * @param {*} queryInfo 包含query, pagenum, pagesize
  */
 export const $getUserList = (queryInfo) => {
   return $http({
@@ -46,17 +46,68 @@ export const $getUserList = (queryInfo) => {
 };
 
 /**
- * 修改用户状态
- * userInfo对象的属性有:id, mg_state
+ * 切换用户状态
+ * @param {*} userInfo 包含id, mg_state
+ * @returns
  */
-export const $modifyUserState = (userInfo) => {
+export const $switchUserState = (userInfo) => {
   return $http({
     method: "PUT",
     url: `/users/${userInfo.id}/state/${userInfo.mg_state}`,
   });
 };
 
-/* 获取角色列表 */
+/**
+ * 通过id获取单个用户
+ * @param {*} id 用户id
+ */
+export const $getUserById = (id) => {
+  return $http({
+    method: "GET",
+    url: `/users/${id}`,
+  });
+};
+
+/**
+ * 添加用户
+ * @param {*} userInfo 包含username,password,email, mobile
+ */
+export const $addUser = (userInfo) => {
+  return $http({
+    method: "POST",
+    url: "/users",
+    data: userInfo,
+  });
+};
+
+/**
+ * 通过id修改用户
+ * @param {*} id 用户id
+ * @param {*} userInfo 包含email,mobile
+ */
+export const $editUserById = (id, userInfo) => {
+  return $http({
+    method: "PUT",
+    url: `/users/${id}`,
+    data: userInfo,
+  });
+};
+
+/**
+ * 通过id删除用户
+ * @param {*} id 用户id
+ * @returns
+ */
+export const $deleteUserById = (id) => {
+  return $http({
+    method: "DELETE",
+    url: `/users/${id}`,
+  });
+};
+
+/**
+ * 获取角色列表
+ */
 export const $getRoleList = () => {
   return $http({
     method: "GET",
@@ -64,18 +115,20 @@ export const $getRoleList = () => {
   });
 };
 
-/* --3. 权限管理--------------------------------------------------------------------------------------------------- */
+/* --4. 权限管理--------------------------------------------------------------------------------------------------- */
 
-/* 获取左侧菜单 */
+/**
+ * 获取左侧菜单
+ */
 export const $getMenuList = () => {
   return $http({
     method: "GET",
     url: "/menus",
   });
 };
-/* --4. 角色管理--------------------------------------------------------------------------------------------------- */
+/* --5. 角色管理--------------------------------------------------------------------------------------------------- */
 
-/* --5. 商品分类管理--------------------------------------------------------------------------------------------------- */
+/* --6. 商品分类管理--------------------------------------------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------------------------------------------- */
 

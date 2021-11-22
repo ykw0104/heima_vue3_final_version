@@ -16,8 +16,33 @@
             message: 'Please input Activity name',
             trigger: 'blur',
           },
+           {
+            validator: checkEmail,
+            trigger: "blur",
+          },
         ],
       }
+
+      /* 邮箱校验规则 */
+const checkEmail = (rule, value, callback) => {
+  const regEmail = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+  if (regEmail.test(value)) {
+    callback();
+  } else {
+    callback(new Error("邮件格式不正确"));
+  }
+};
+
+/* 手机校验规则 */
+const checkMobile = (rule, value, callback) => {
+  const regMobile =
+    /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+  if (regMobile.test(value)) {
+    callback();
+  } else {
+    callback(new Error("手机号格式不正确"));
+  }
+};
 
 
     loginFormRef.value.validate((valid) => {
@@ -28,7 +53,6 @@
     });
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
    import { ElMessage } from 'element-plus' 
-   
     if (res.meta.status !== 200) return ElMessage.error("登录失败 o(╥﹏╥)o");
     ElMessage.success("登录成功 (*^▽^*)");
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -38,3 +62,30 @@
         placeholder="Type something"
         :prefix-icon="Search"
       />
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  <!-- 面包屑 -->
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
+      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
+    </el-breadcrumb>
+
+自定义列模板
+  <el-table-column label="Date" width="180">    
+      <template #default="scope">
+        <el-icon><timer /></el-icon>
+        <span style="margin-left: 10px">{{ scope.row.date }}</span>
+      </template>
+    </el-table-column>
+
+////////////////////////////////////////////////////////////////
+  // 确定返回:confirm 取消返回:cancel
+  const confirmResult = await ElMessageBox.confirm(
+    `确认删除用户"${user.username}"吗?`,
+    "删除警告",
+    {
+      confirmButtonText: "确定",
+      cancelButtonText: "取消",
+      type: "warning",
+    }
+  ).catch((err) => err);
