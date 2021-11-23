@@ -96,7 +96,6 @@ export const $editUserById = (id, userInfo) => {
 /**
  * 通过id删除用户
  * @param {*} id 用户id
- * @returns
  */
 export const $deleteUserById = (id) => {
   return $http({
@@ -106,16 +105,31 @@ export const $deleteUserById = (id) => {
 };
 
 /**
- * 获取角色列表
+ * 更新用户角色
+ * @param {*} id 用户id
+ * @param {*} rid 角色id
  */
-export const $getRoleList = () => {
+export const $saveRole = (id, rid) => {
   return $http({
-    method: "GET",
-    url: "/roles",
+    method: "PUT",
+    url: `/users/${id}/role`,
+    data: {
+      rid,
+    },
   });
 };
 
 /* --4. 权限管理--------------------------------------------------------------------------------------------------- */
+/**
+ * 获取所有权限列表
+ * @param {*} type 值list或tree
+ */
+export const $getRightsList = (type) => {
+  return $http({
+    method: "GET",
+    url: `/rights/${type}`,
+  });
+};
 
 /**
  * 获取左侧菜单
@@ -127,7 +141,43 @@ export const $getMenuList = () => {
   });
 };
 /* --5. 角色管理--------------------------------------------------------------------------------------------------- */
+/**
+ * 获取角色列表
+ */
+export const $getRolesList = () => {
+  return $http({
+    method: "GET",
+    url: "/roles",
+  });
+};
 
+/**
+ * 删除指定权限
+ * @param {*} roleId 角色id
+ * @param {*} rightId 权限id
+ */
+export const $deleteRight = (roleId, rightId) => {
+  return $http({
+    method: "DELETE",
+    url: `/roles/${roleId}/rights/${rightId}`,
+  });
+};
+
+/**
+ * 给角色添加权限
+ * @param {*} roleId 角色id
+ * @param {*} rids 半选中和全选中的权限id, 逗号分隔
+ * @returns
+ */
+export const $addRights = (roleId, rids) => {
+  return $http({
+    method: "POST",
+    url: `/roles/${roleId}/rights`,
+    data: {
+      rids,
+    },
+  });
+};
 /* --6. 商品分类管理--------------------------------------------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------------------------------------------- */

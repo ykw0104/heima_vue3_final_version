@@ -18,3 +18,13 @@ export const checkMobile = (rule, value, callback) => {
     callback(new Error("手机号格式不正确"));
   }
 };
+
+/*  递归获取role的三级权限 */
+export const getLeafKeys = (node, arr) => {
+  // node节点不包含children属性, 则是三级节点
+  if (!node.children) {
+    return arr.push(node.id);
+  }
+
+  node.children.forEach((item) => getLeafKeys(item, arr));
+};

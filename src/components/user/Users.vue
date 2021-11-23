@@ -71,7 +71,12 @@
               placement="top"
               :enterable="false"
             >
-              <el-button type="warning" :icon="Setting" size="mini" />
+              <el-button
+                type="warning"
+                :icon="Setting"
+                size="mini"
+                @click="setRole(scope.row)"
+              />
             </el-tooltip>
           </template>
         </el-table-column>
@@ -154,6 +159,37 @@
           </span>
         </template>
       </el-dialog>
+
+      <!-- 2.6 分配角色弹出框 -->
+      <el-dialog
+        v-model="setRoleDialogVisible"
+        title="分配角色"
+        width="50%"
+        @close="setRoleDialogClose"
+      >
+        <div class="set-role">
+          <p>当前用户: {{ user.username }}</p>
+          <p>当前角色: {{ user.role_name }}</p>
+          <p>
+            分配新角色:
+            <el-select v-model="selectRoleId" placeholder="选择角色">
+              <el-option
+                v-for="item in rolesList"
+                :key="item.id"
+                :label="item.roleName"
+                :value="item.id"
+              />
+            </el-select>
+          </p>
+        </div>
+
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="setRoleDialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="saveRole()">确定</el-button>
+          </span>
+        </template>
+      </el-dialog>
     </el-card>
   </div>
 </template>
@@ -170,6 +206,8 @@ import {
   $getUserById,
   $editUserById,
   $deleteUserById,
+  $getRolesList,
+  $saveRole,
 } from "@/request";
 import { checkEmail, checkMobile } from "@/utils";
 /* --Data--------------------------------------------------------------------------------------------------- */
@@ -269,6 +307,14 @@ const editFormRules = ref({
   ],
 });
 
+// 设置分配角色对话框的显示和隐藏
+const setRoleDialogVisible = ref(false);
+// 需要被分配角色的user
+const user = ref({});
+// 所有的角色数据
+const rolesList = ref([]);
+// 选择框选中的role id
+const selectRoleId = ref("");
 /* --Methods------------------------------------------------------------------------------------------------ */
 /* 获取用户列表 */
 const getUserList = async () => {
@@ -412,7 +458,7 @@ const editUser = () => {
   });
 };
 
-// 监听删除用户
+/* 监听删除用户 */
 const deleteUser = async (user) => {
   // 确定返回:confirm 取消返回:cancel
   const confirmResult = await ElMessageBox.confirm(
@@ -439,9 +485,62 @@ const deleteUser = async (user) => {
   // 获取用户列表
   getUserList();
 };
+
+/* 设置按钮的click事件: 获取分配角色数据 */
+const setRole = async (userInfo) => {
+  // 保存当前被点击的user
+  user.value = userInfo;
+
+  // 获取所有角色
+  const { data: res } = await $getRolesList();
+
+  // 获取角色列表失败
+  if (res.meta.status !== 200)
+    return ElMessage.error("获取角色列表失败 o(╥﹏╥)o");
+
+  // 保存角色列表
+  rolesList.value = res.data;
+
+  // 开启弹出框
+  setRoleDialogVisible.value = true;
+};
+
+/* 确定按钮的click事件: 更新角色 */
+const saveRole = async () => {
+  // 没有选择角色
+  if (!selectRoleId.value) {
+    return ElMessage.error("请选择要分配的角色");
+  }
+
+  // 更新角色
+  const { data: res } = await $saveRole(user.value.id, selectRoleId.value);
+
+  // 更新失败
+  if (res.meta.status !== 200) return ElMessage.error("更新角色失败 o(╥﹏╥)o");
+
+  // 更新成功
+  ElMessage.success("登录成功 (*^▽^*)");
+
+  // 获取用户列表
+  getUserList();
+  // 关闭弹出框
+  setRoleDialogVisible.value = false;
+};
+
+/* setRoleDialog的关闭事件 : 清空数据 */
+const setRoleDialogClose = () => {
+  selectRoleId.value = [];
+  user.value = {};
+};
 /* --Others------------------------------------------------------------------------------------------------- */
 // 获取用户列表
 getUserList();
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.set-role {
+  > p {
+    margin: 15px 0;
+  }
+}
+</style>
