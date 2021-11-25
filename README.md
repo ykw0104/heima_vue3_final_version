@@ -22,13 +22,16 @@ Users组件:
   $editUserById(修改单个用户)
   $deleteUserById(删除某个用户)
   $getRolesList(获取角色列表)
-  
+
  Rights组件:
   $getRightsList(获取权限列表 type:list)
-  
+
  Roles组件:
   $getRolesList(获取角色列表)
   $deleteRight(删除某个角色的指定权限)
   $getRightsList(获取权限列表 type: tree)
   $addRights(给某个角色添加权限)
+
+  Cate组件:
+  $getCategories(获取商品分类列表)
 ```

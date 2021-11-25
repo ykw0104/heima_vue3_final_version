@@ -345,11 +345,12 @@ const getUserList = async () => {
 const handleSizeChange = (pageSize) => {
   queryInfo.value.pagesize = pageSize;
   // 视频中有个bug,如pagesize为2,在pagenum为4时, 切换到pagesize为10, 有时候会没数据
-  // 自己的处理: 如果当前页已经大于页码改变后的最大页, 则直接返回,不执行查询
+  // 自己的处理: 如果当前页已经大于页码改变后的最大页, 则直接返回,不执行查询, 让handleCurrentChange处理
   if (
     queryInfo.value.pagenum > Math.ceil(total.value / queryInfo.value.pagesize)
-  )
+  ) {
     return;
+  }
 
   // 获取用户列表
   getUserList();
