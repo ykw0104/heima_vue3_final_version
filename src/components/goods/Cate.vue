@@ -13,7 +13,9 @@
     <!-- 2.1 添加按钮 -->
     <el-row>
       <el-col>
-        <el-button type="primary">添加分类</el-button>
+        <el-button type="primary" @click="showAddCateDialog"
+          >添加分类</el-button
+        >
       </el-col>
     </el-row>
 
@@ -68,6 +70,44 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
+
+    <!-- 2.4 添加分类商品弹出框 -->
+    <el-dialog
+      v-model="addCateDialogVisible"
+      title="添加分类"
+      width="50%"
+      @close="addCateDialogClose"
+    >
+      <!-- 2.4.1 添加分类商品的表单 -->
+      <el-form
+        ref="addCateFormRef"
+        :model="addCateForm"
+        :rules="addCateFormRules"
+        label-width="120px"
+      >
+        <el-form-item label="分类名称" prop="cat_name">
+          <el-input v-model="addCateForm.cat_name" />
+        </el-form-item>
+        <el-form-item label="父级分类">
+          <!-- 2.4.1.1 级联选择器 -->
+          <el-cascader
+            v-model="selectedKeys"
+            :options="parentCateList"
+            :props="cascaderProps"
+            @change="parentCateChange"
+            clearable
+            style="width: 100%"
+          ></el-cascader>
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="addCateDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="addCate">确定</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </el-card>
 </template>
 
@@ -76,7 +116,7 @@
 import { ref } from "vue";
 import { Close, Check, Edit, Delete } from "@element-plus/icons";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { $getCategories } from "@/request";
+import { $getCategories, $addCategory } from "@/request";
 /* --Data--------------------------------------------------------------------------------------------------- */
 // 请求商品分类数据的参数
 const queryInfo = ref({
@@ -91,6 +131,40 @@ const total = ref(0);
 // 商品table是否显示加载
 const isCateTableLoading = ref(false);
 
+// 控制添加分类商品弹出框
+const addCateDialogVisible = ref(false);
+// 添加分类表单对象
+const addCateFormRef = ref(null);
+// 添加分类表单数据
+const addCateForm = ref({
+  cat_name: "",
+  // 父级分类id
+  cat_pid: 0,
+  // 分类等级, 默认是添加一级分类
+  cat_level: 0,
+});
+// 添加分类校验规则
+const addCateFormRules = ref({
+  cat_name: [
+    {
+      required: true,
+      message: "分类名称不能为空",
+      trigger: "blur",
+    },
+  ],
+});
+// 分类表单中的父级分类数据
+const parentCateList = ref([]);
+// 级联选择框的配置项
+const cascaderProps = ref({
+  expandTrigger: "hover",
+  checkStrictly: true, // 可以选中一级或二级
+  value: "cat_id",
+  label: "cat_name",
+  children: "children",
+});
+// 级联选择器的选中值
+const selectedKeys = ref([]);
 /* --Methods------------------------------------------------------------------------------------------------ */
 /* 获取商品分类数据 */
 const getCateList = async () => {
@@ -133,6 +207,71 @@ const handleSizeChange = (newPageSize) => {
 const handleCurrentChange = (newPagenum) => {
   queryInfo.value.pagenum = newPagenum;
   getCateList();
+};
+
+/* 添加按钮的click事件: 显示添加分类商品弹出框 */
+const showAddCateDialog = () => {
+  // 获取父级分类的数据列表
+  getParentCateList();
+
+  // 显示弹出框
+  addCateDialogVisible.value = true;
+};
+
+/* 获取父级分类的商品列表 */
+const getParentCateList = async () => {
+  const { data: res } = await $getCategories({ type: 2 });
+
+  // 失败提示
+  if (res.meta.status !== 200)
+    return ElMessage.error("获取父级分类数据失败 o(╥﹏╥)o");
+
+  // 保存父级分类列表
+  parentCateList.value = res.data;
+};
+
+/* 父级分类的级联选择器选项改变 */
+const parentCateChange = () => {
+  // 选中的父级分类
+  if (selectedKeys.value && selectedKeys.value.length > 0) {
+    addCateForm.value.cat_pid =
+      selectedKeys.value[selectedKeys.value.length - 1];
+    addCateForm.value.cat_level = selectedKeys.value.length;
+    return;
+  } else {
+    addCateForm.value.cat_pid = 0;
+    addCateForm.value.cat_level = 0;
+  }
+};
+
+/* 确认按钮的click事件: 添加新分类*/
+const addCate = () => {
+  addCateFormRef.value.validate(async (valide) => {
+    // 校验失败
+    if (!valide) return;
+
+    // 校验成功
+    const { data: res } = await $addCategory(addCateForm.value);
+
+    // 失败提示
+    if (res.meta.status !== 201)
+      return ElMessage.error("添加分类失败 o(╥﹏╥)o");
+
+    // 成功提示
+    ElMessage.success("添加分类成功  (*^▽^*)");
+    // 获取商品分类数据
+    getCateList();
+    // 关闭添加分类弹出框
+    addCateDialogVisible.value = false;
+  });
+};
+
+/* 添加分类弹出框的close事件: 清空表单数据 */
+const addCateDialogClose = () => {
+  addCateFormRef.value.resetFields();
+  selectedKeys.value = [];
+  addCateForm.value.cat_level = 0;
+  addCateForm.value.cat_pid = 0;
 };
 /* --Others------------------------------------------------------------------------------------------------- */
 // 获取商品分类数据

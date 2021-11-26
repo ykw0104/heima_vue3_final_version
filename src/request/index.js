@@ -193,6 +193,18 @@ export const $getCategories = (queryInfo) => {
     params: queryInfo,
   });
 };
+
+/**
+ * 添加分类
+ * @param {*} cate 包含三个属性: cat_pid(父分类ID), cat_name, cat_level
+ */
+export const $addCategory = (cate) => {
+  return $http({
+    method: "POST",
+    url: "/categories",
+    data: cate,
+  });
+};
 /* ----------------------------------------------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------------------------------------------- */

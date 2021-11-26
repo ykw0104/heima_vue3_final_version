@@ -34,4 +34,5 @@ Users组件:
 
   Cate组件:
   $getCategories(获取商品分类列表)
+  $addCategory(添加商品)
 ```
