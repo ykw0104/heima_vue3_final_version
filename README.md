@@ -32,7 +32,32 @@ Users组件:
   $getRightsList(获取权限列表 type: tree)
   $addRights(给某个角色添加权限)
 
-  Cate组件:
+Cate组件:
   $getCategories(获取商品分类列表)
   $addCategory(添加商品)
+
+Params:
+  $getParams(获取商品所有参数)
+  $addParam(添加商品参数)
+  $getParam(获取商品某个参数)
+  $editParam(修改商品参数)
+  $deleteParam(删除商品参数)
+```
+
+```
+递归处理树形结构的数据
+/*  递归获取role的三级权限 */
+export const getLeafKeys = (node, arr) => {
+  // node节点不包含children属性, 则是三级节点
+  if (!node.children) {
+    return arr.push(node.id);
+  }
+
+  node.children.forEach((item) => getLeafKeys(item, arr));
+};
+```
+
+```
+Params组件的table使用了row-key:
+        <el-table :data="onlyTableData" stripe border row-key="attr_id">
 ```

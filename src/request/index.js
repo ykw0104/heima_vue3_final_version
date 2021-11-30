@@ -183,8 +183,8 @@ export const $addRights = (roleId, rids) => {
  * 查询商品分类列表
  * @param {*} queryInfo 包含三个值:
  * 1. type : [1,2,3] 一层,两层,三层分类列表, 不传获取所有级别
- * 2. pagenum: 当前页,
- * 3. pagesize: 每页显示多少条
+ * 2. pagenum: 当前页, 不传获取所有
+ * 3. pagesize: 每页显示多少条, 不传获取所有
  */
 export const $getCategories = (queryInfo) => {
   return $http({
@@ -205,7 +205,88 @@ export const $addCategory = (cate) => {
     data: cate,
   });
 };
-/* ----------------------------------------------------------------------------------------------------- */
+/* --7. 分类参数管理--------------------------------------------------------------------------------------------------- */
+/**
+ * 获取分类商品的所有参数
+ * @param {*} cateId 分类Id
+ * @param {*} sel 值only: 静态参数 , 值many: 动态参数
+ */
+export const $getParams = (cateId, sel) => {
+  return $http({
+    method: "GET",
+    url: `/categories/${cateId}/attributes`,
+    params: {
+      sel,
+    },
+  });
+};
+
+/**
+ * 获取分类商品的某个参数
+ * @param {*} cateId 分类Id
+ * @param {*} attrId 参数Id
+ * @param {*} attr_sel 值many或only
+ * @param {*} attr_vals 如果是many需要填写值, 以逗号分隔
+ */
+export const $getParam = (cateId, attrId, attr_sel, attr_vals = null) => {
+  return $http({
+    method: "GET",
+    url: `/categories/${cateId}/attributes/${attrId}`,
+    params: {
+      attr_sel,
+      attr_vals,
+    },
+  });
+};
+
+/**
+ * 添加参数
+ * @param {*} cateId  分类Id
+ * @param {*} attrObj 包含:
+ *                      attr_name: 参数名称
+ *                      attr_sel: many或only
+ *                      attr_vals: 如果是many,需要填写值的选项, 逗号分隔(可选参数)
+ */
+export const $addParam = (cateId, attrObj) => {
+  return $http({
+    method: "POST",
+    url: `/categories/${cateId}/attributes`,
+    data: attrObj,
+  });
+};
+
+/**
+ * 修改参数
+ * @param {*} cateId 分类Id
+ * @param {*} attrId 属性Id
+ * @param {*} attrObj 三个值: attr_name, attr_sel, attr_vals(可选)
+ */
+export const $editParam = (cateId, attrId, attrObj) => {
+  return $http({
+    method: "PUT",
+    url: `/categories/${cateId}/attributes/${attrId}`,
+    data: attrObj,
+  });
+};
+
+/**
+ * 删除参数
+ * @param {*} cateId 分类Id
+ * @param {*} attrId 属性Id
+ */
+export const $deleteParam = (cateId, attrId) => {
+  return $http({
+    method: "DELETE",
+    url: `/categories/${cateId}/attributes/${attrId}`,
+  });
+};
+/* --8. 商品管理--------------------------------------------------------------------------------------------------- */
+
+/* --9. 图片上传--------------------------------------------------------------------------------------------------- */
+
+/* --10. 订单管理--------------------------------------------------------------------------------------------------- */
+
+/* --11. 数据统计--------------------------------------------------------------------------------------------------- */
 
 /* ----------------------------------------------------------------------------------------------------- */
 
