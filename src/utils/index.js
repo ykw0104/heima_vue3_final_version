@@ -28,3 +28,17 @@ export const getLeafKeys = (node, arr) => {
 
   node.children.forEach((item) => getLeafKeys(item, arr));
 };
+
+/* 时间过滤器 */
+export const dateFormat = (origData) => {
+  const dt = new Date(origData);
+  const year = dt.getFullYear();
+  const month = (dt.getMonth() + 1 + "").padStart(2, "0");
+  const day = (dt.getDate() + "").padStart(2, "0");
+
+  const hour = (dt.getHours() + "").padStart(2, "0");
+  const minute = (dt.getMinutes() + "").padStart(2, "0");
+  const second = (dt.getSeconds() + "").padStart(2, "0");
+
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+};

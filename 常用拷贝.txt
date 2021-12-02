@@ -56,36 +56,6 @@ const checkMobile = (rule, value, callback) => {
     if (res.meta.status !== 200) return ElMessage.error("登录失败 o(╥﹏╥)o");
     ElMessage.success("登录成功 (*^▽^*)");
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-      // 带图标的输入框
-      <el-input
-        v-model="input2"
-        placeholder="Type something"
-        :prefix-icon="Search"
-      />
+  
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  <!-- 面包屑 -->
-    <el-breadcrumb separator="/">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-      <el-breadcrumb-item>用户列表</el-breadcrumb-item>
-    </el-breadcrumb>
-
-自定义列模板
-  <el-table-column label="Date" width="180">    
-      <template #default="scope">
-        <el-icon><timer /></el-icon>
-        <span style="margin-left: 10px">{{ scope.row.date }}</span>
-      </template>
-    </el-table-column>
-
-////////////////////////////////////////////////////////////////
-  // 确定返回:confirm 取消返回:cancel
-  const confirmResult = await ElMessageBox.confirm(
-    `确认删除用户"${user.username}"吗?`,
-    "删除警告",
-    {
-      confirmButtonText: "确定",
-      cancelButtonText: "取消",
-      type: "warning",
-    }
-  ).catch((err) => err);
+  

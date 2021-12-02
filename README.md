@@ -42,6 +42,9 @@ Params:
   $getParam(获取商品某个参数)
   $editParam(修改商品参数)
   $deleteParam(删除商品参数)
+
+List组件:
+  $getGoodsList(获取商品列表数据)
 ```
 
 ```
@@ -60,4 +63,22 @@ export const getLeafKeys = (node, arr) => {
 ```
 Params组件的table使用了row-key:
         <el-table :data="onlyTableData" stripe border row-key="attr_id">
+```
+
+```
+Add组件里使
+    1. 图片上传组件 el-upload
+    2. 富文本编辑器 https://vueup.github.io/vue-quill/guide/usage.html#in-single-file-component
+    3. 深拷贝  lodash
+```
+
+```
+// 视频中有个bug,如pagesize为2,在pagenum为4时, 切换到pagesize为10, 有时候会没数据
+// 自己的处理: 如果当前页已经大于页码改变后的最大页, 则直接返回,不执行查询, 让handleCurrentChange处理
+
+  if (
+    queryInfo.value.pagenum > Math.ceil(total.value / queryInfo.value.pagesize)
+  ) {
+    return;
+  }
 ```

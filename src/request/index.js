@@ -182,9 +182,9 @@ export const $addRights = (roleId, rids) => {
 /**
  * 查询商品分类列表
  * @param {*} queryInfo 包含三个值:
- * 1. type : [1,2,3] 一层,两层,三层分类列表, 不传获取所有级别
- * 2. pagenum: 当前页, 不传获取所有
- * 3. pagesize: 每页显示多少条, 不传获取所有
+ * 1. type : [1,2,3] 一层,两层,三层分类列表, 不传获取所有级别(可选)
+ * 2. pagenum: 当前页, 不传获取所有(可选)
+ * 3. pagesize: 每页显示多少条, 不传获取所有(可选)
  */
 export const $getCategories = (queryInfo) => {
   return $http({
@@ -281,7 +281,52 @@ export const $deleteParam = (cateId, attrId) => {
   });
 };
 /* --8. 商品管理--------------------------------------------------------------------------------------------------- */
+/**
+ * 获取商品列表数据
+ * @param {*} queryInfo 包含:
+ *                    query(查询参数)
+ *                    pagenum(当前页码)
+ *                    pagesize(每页显示条数)
+ */
+export const $getGoodsList = (queryInfo) => {
+  return $http({
+    method: "GET",
+    url: `/goods`,
+    params: queryInfo,
+  });
+};
 
+/**
+ * 删除商品
+ * @param {*} id 商品Id
+ * @returns
+ */
+export const $deleteGoods = (id) => {
+  return $http({
+    method: "DELETE",
+    url: `/goods/${id}`,
+  });
+};
+
+/**
+ * 添加商品
+ * @param {*} goods
+ *  goods_name: 商品名称
+    goods_price: 价格
+    goods_weight: 重量
+    goods_number: 数量
+    goods_cat: 用','分割的分类列表
+    pics: 上传图片的数组(可空)
+    goods_introduce: 介绍(可空)
+    attrs: 商品参数(数组), 包含商品参数和属性
+ */
+export const $addGoods = (goods) => {
+  return $http({
+    method: "POST",
+    url: `/goods`,
+    data: goods,
+  });
+};
 /* --9. 图片上传--------------------------------------------------------------------------------------------------- */
 
 /* --10. 订单管理--------------------------------------------------------------------------------------------------- */
