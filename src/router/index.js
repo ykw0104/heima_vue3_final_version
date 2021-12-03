@@ -20,6 +20,10 @@ const routes = [
       { path: "/goods", component: () => import("@/components/goods/List") },
       { path: "/goods/add", component: () => import("@/components/goods/Add") },
       { path: "/orders", component: () => import("@/components/order/Order") },
+      {
+        path: "/reports",
+        component: () => import("@/components/report/Report"),
+      },
     ],
   },
 ];
